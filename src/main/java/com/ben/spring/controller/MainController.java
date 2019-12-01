@@ -94,10 +94,4 @@ public class MainController {
         return ResponseEntity.ok(new AuthenResponse(jwt));
     }
 
-    //test conflict github
-
-    //test branch github
-
-    //test pull request  zzz
-
 }
