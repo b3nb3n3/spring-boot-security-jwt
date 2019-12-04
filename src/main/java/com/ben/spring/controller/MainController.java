@@ -9,7 +9,9 @@ import com.ben.spring.models.AuthenRequest;
 import com.ben.spring.models.AuthenResponse;
 import com.ben.spring.security.CustomUserDetailsService;
 import com.ben.spring.security.JwtUtil;
+import com.ben.spring.service.AuthorService;
 import com.ben.spring.service.CustomerService;
+import com.ben.spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,10 +29,10 @@ public class MainController {
     CustomerService customerService;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Autowired
-    AuthorRepository authorRepository;
+    AuthorService authorService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -43,12 +45,12 @@ public class MainController {
 
     @GetMapping("/users/{username}")
     public User getUsers(@PathVariable String username){
-        return userRepository.findByUserName(username);
+        return userService.findByUserName(username);
     }
 
     @GetMapping("/authorities/{username}")
     public Authorities getUserRole(@PathVariable String username){
-        return authorRepository.findByUserName(username);
+        return authorService.findByUserName(username);
     }
 
     @GetMapping("/customers")
