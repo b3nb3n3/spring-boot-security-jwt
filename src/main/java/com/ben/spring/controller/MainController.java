@@ -17,9 +17,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -43,14 +47,11 @@ public class MainController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @GetMapping("/users/{username}")
-    public User getUsers(@PathVariable String username){
-        return userService.findByUserName(username);
-    }
-
-    @GetMapping("/authorities/{username}")
-    public Authorities getUserRole(@PathVariable String username){
-        return authorService.findByUserName(username);
+    @GetMapping("/currentUser")
+    @ResponseBody
+    public String currentUser(HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        return principal.getName();
     }
 
     @GetMapping("/customers")
@@ -92,7 +93,6 @@ public class MainController {
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenRequest.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails);
-
         return ResponseEntity.ok(new AuthenResponse(jwt));
     }
 
