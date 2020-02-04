@@ -11,3 +11,10 @@ create table authorities (
 	constraint fk_authorities_users foreign key(username) references users(username)
 );
 create unique index ix_auth_username on authorities (username,authority);
+
+create table customer(
+    id int not null primary key,
+	firstName varchar(20) not null,
+	lastName varchar(20) not null,
+	email varchar(20) not null
+);
